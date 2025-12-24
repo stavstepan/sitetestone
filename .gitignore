@@ -1,0 +1,99 @@
+# Системные файлы Битрикс
+/bitrix/backup/
+/bitrix/cache/
+/bitrix/managed_cache/
+/bitrix/stack_cache/
+/bitrix/updates/
+/bitrix/tmp/
+/bitrix/html_pages/
+/bitrix/modules/main/classes/mysql/
+/bitrix/modules/main/classes/general/version.php
+/bitrix/.settings.php
+/bitrix/.settings_extra.php
+
+# Логи и временные файлы
+/bitrix/modules/error.log
+/upload/
+/upload_tmp/
+/bitrix/modules/main/install/wizards/bitrix/portal/build/
+/bitrix/modules/main/install/wizards/bitrix/portal/build/
+/bitrix/modules/main/install/wizards/bitrix/portal/site_logo/
+
+# Пользовательские файлы загрузки
+/upload/
+/bitrix/html_pages/
+/bitrix/managed_cache/
+/bitrix/stack_cache/
+/bitrix/cache/
+
+# Резервные копии
+*.backup
+*.bak
+/local/backup/
+
+# Системные файлы ОС
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*~
+
+# IDE файлы
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# PhpStorm
+.idea/
+*.iml
+*.iws
+*.ipr
+.idea_modules/
+atlassian-ide-plugin.xml
+com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
+fabric.properties
+
+# Временные файлы
+*.tmp
+*.temp
+*.log
+
+# Node.js (если используется)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Composer (если используется)
+/vendor/
+composer.lock
+
+# Файлы окружения
+.env
+.env.local
+.env.production
+
+# Архивы
+*.zip
+*.tar.gz
+*.rar
+
+# Файлы сессий PHP
+/bitrix/tmp/
+/tmp/
+
+# Дополнительные исключения для Битрикс24
+/bitrix/modules/bitrix24/
+/bitrix/modules/rest/
+/bitrix/modules/socialservices/
+
+# Статистика и аналитика
+/bitrix/modules/statistic/
+/logs/
