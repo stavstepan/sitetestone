@@ -1,0 +1,335 @@
+openapi: 3.0.3
+info:
+  title: Shop API
+  description: REST API для интернет-магазина на базе 1C-Bitrix
+  version: 1.0.0
+  contact:
+    name: API Support
+
+servers:
+  - url: https://example.com/api/v1
+    description: Production server
+  - url: http://localhost/api/v1
+    description: Development server
+
+paths:
+  /categories:
+    get:
+      summary: Получить список категорий каталога "Одежда"
+      description: Возвращает список активных категорий первого уровня с дочерними категориями
+      operationId: getCategories
+      tags:
+        - Categories
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Category'
+        '500':
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /categories/{id}:
+    get:
+      summary: Получить категорию по ID
+      description: Возвращает детальную информацию о категории
+      operationId: getCategoryById
+      tags:
+        - Categories
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID категории
+          schema:
+            type: integer
+            example: 123
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/Category'
+        '404':
+          description: Категория не найдена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /products/category/{categoryId}:
+    get:
+      summary: Получить список товаров в категории
+      description: Возвращает список активных товаров в указанной категории
+      operationId: getProductsByCategory
+      tags:
+        - Products
+      parameters:
+        - name: categoryId
+          in: path
+          required: true
+          description: ID категории
+          schema:
+            type: integer
+            example: 123
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProductShort'
+        '500':
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /products/{id}:
+    get:
+      summary: Получить детальную информацию о товаре
+      description: Возвращает полную информацию о товаре, включая галерею, характеристики и торговые предложения
+      operationId: getProductById
+      tags:
+        - Products
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID товара
+          schema:
+            type: integer
+            example: 456
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/ProductDetail'
+        '404':
+          description: Товар не найден
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Внутренняя ошибка сервера
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID категории
+          example: 123
+        name:
+          type: string
+          description: Наименование категории
+          example: "Мужская одежда"
+        detailPageUrl:
+          type: string
+          nullable: true
+          description: URL детальной страницы категории
+          example: "/catalog/mens-clothing/"
+        picture:
+          type: string
+          nullable: true
+          description: URL картинки категории
+          example: "/upload/iblock/abc/category.jpg"
+        children:
+          type: array
+          description: Список дочерних категорий
+          items:
+            $ref: '#/components/schemas/CategoryShort'
+
+    CategoryShort:
+      type: object
+      description: Краткая информация о категории (для дочерних категорий)
+      properties:
+        id:
+          type: integer
+          description: ID категории
+          example: 124
+        name:
+          type: string
+          description: Наименование категории
+          example: "Рубашки"
+        detailPageUrl:
+          type: string
+          nullable: true
+          description: URL детальной страницы категории
+          example: "/catalog/mens-clothing/shirts/"
+        picture:
+          type: string
+          nullable: true
+          description: URL картинки категории
+          example: "/upload/iblock/def/category.jpg"
+
+    ProductShort:
+      type: object
+      description: Краткая информация о товаре (для списка)
+      properties:
+        id:
+          type: integer
+          description: ID товара
+          example: 456
+        name:
+          type: string
+          description: Наименование товара
+          example: "Рубашка мужская"
+        detailPageUrl:
+          type: string
+          nullable: true
+          description: URL детальной страницы товара
+          example: "/catalog/product/shirt-mens/"
+        picture:
+          type: string
+          nullable: true
+          description: URL картинки товара
+          example: "/upload/iblock/ghi/product.jpg"
+        priceFrom:
+          type: number
+          format: float
+          nullable: true
+          description: Минимальная цена товара (цена "от")
+          example: 2990.00
+
+    ProductDetail:
+      type: object
+      description: Детальная информация о товаре
+      properties:
+        id:
+          type: integer
+          description: ID товара
+          example: 456
+        name:
+          type: string
+          description: Наименование товара
+          example: "Рубашка мужская"
+        detailPageUrl:
+          type: string
+          nullable: true
+          description: URL детальной страницы товара
+          example: "/catalog/product/shirt-mens/"
+        gallery:
+          type: array
+          description: Галерея изображений товара
+          items:
+            type: string
+            example: "/upload/iblock/ghi/product1.jpg"
+        properties:
+          type: object
+          description: Характеристики товара
+          properties:
+            brand:
+              type: string
+              nullable: true
+              description: Бренд
+              example: "Nike"
+            manufacturer:
+              type: string
+              nullable: true
+              description: Производитель
+              example: "Nike Inc."
+            material:
+              type: string
+              nullable: true
+              description: Материал
+              example: "Хлопок 100%"
+        offers:
+          type: array
+          description: Список торговых предложений (SKU)
+          items:
+            $ref: '#/components/schemas/ProductOffer'
+
+    ProductOffer:
+      type: object
+      description: Торговое предложение (SKU)
+      properties:
+        id:
+          type: integer
+          description: ID торгового предложения
+          example: 789
+        name:
+          type: string
+          description: Наименование торгового предложения
+          example: "Рубашка мужская, синий, L"
+        article:
+          type: string
+          description: Артикул
+          example: "SHIRT-BLUE-L"
+        color:
+          type: string
+          nullable: true
+          description: Цвет
+          example: "Синий"
+        size:
+          type: string
+          nullable: true
+          description: Размер
+          example: "L"
+
+    Error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          description: Описание ошибки
+          example: "Товар не найден"
+
+tags:
+  - name: Categories
+    description: Операции с категориями каталога
+  - name: Products
+    description: Операции с товарами

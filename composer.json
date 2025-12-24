@@ -1,0 +1,14 @@
+{
+    "name": "custom/shop-api",
+    "description": "REST API модуль для интернет-магазина на базе 1C-Bitrix",
+    "type": "bitrix-module",
+    "require": {
+        "php": ">=7.4",
+        "phpoffice/phpspreadsheet": "^1.29"
+    },
+    "autoload": {
+        "psr-4": {
+            "Custom\\ShopApi\\": "local/modules/custom.shopapi/lib/"
+        }
+    }
+}
